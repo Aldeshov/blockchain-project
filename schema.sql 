@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS statistics (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    month_purchase INTEGER NOT NULL DEFAULT 0,
+    year_purchase INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS profile (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    credits INTEGER NOT NULL,
+    statistics_id INTEGER,
+    FOREIGN KEY(statistics_id) REFERENCES statistics(id)
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    profile_id INTEGER,
+    name TEXT NOT NULL,
+    message TEXT NOT NULL,
+    type TEXT NOT NULL,
+    weight INTEGER NOT NULL,
+    number INTEGER NOT NULL,
+    departure_date TIMESTAMP NOT NULL,
+    status TEXT NOT NULL,
+    delivery_date TIMESTAMP,
+    FOREIGN KEY(profile_id) REFERENCES profile(id)
+);
