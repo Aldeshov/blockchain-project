@@ -282,14 +282,28 @@
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Status: {{ order['status'] }} </p>
-                        <p>{{ order['message'] }} </p>
+                        <p>
+                            <strong>Status: </strong>
+                            {{ order['status'] }}
+                        </p>
+                        <p>
+                            <strong>Message: </strong>
+                            {{ order['message'] }}
+                        </p>
+                        {% if order['status'] == "delivered" and order['delivery_date'] is not none %}
+                            <p>
+                                <strong>Delivered on: </strong>
+                                {{ order['delivery_date'] }}
+                            </p>
+                        {% endif %}
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-light" type="button" data-bs-dismiss="modal">
                             Close
                         </button>
-                        <a href="{{ url_for('fetch', order_id=order['id']) }}"><button class="btn btn-primary" type="button">Fetch</button></a>
+                        <a href="{{ url_for('fetch', order_id=order['id']) }}">
+                            <button class="btn btn-primary" type="button">Fetch</button>
+                        </a>
                     </div>
                 </div>
             </div>

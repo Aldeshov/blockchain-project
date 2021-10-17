@@ -1,4 +1,6 @@
 import sqlite3
+from datetime import datetime
+
 import requests
 from flask import Flask, render_template, request, url_for, redirect
 
@@ -15,8 +17,12 @@ def get_connection():
 def fetch(order_id):
     conn = get_connection()
     _order = conn.execute("SELECT * FROM orders WHERE id=(?)", (order_id,)).fetchall()[0]
-    content = requests.get('http://127.0.0.1:6000', {"status": _order['status']}).content
-    conn.execute("UPDATE OR ABORT orders SET status = (?) WHERE id=(?)", (content.decode(), _order['id'],))
+    content = requests.get('http://127.0.0.1:6000', {"status": _order['status']}).content.decode()
+    conn.execute("UPDATE OR ABORT orders SET status = (?) WHERE id=(?)", (content, _order['id'],))
+    if content == "delivered":
+        now = datetime.now()
+        conn.execute("UPDATE OR ABORT orders SET delivery_date = (?) WHERE id=(?)",
+                     (now.strftime("%d/%m/%Y %H:%M:%S"), _order['id'],))
     conn.commit()
     conn.close()
     return redirect(url_for('status'))
@@ -68,7 +74,7 @@ def status():
 
 @app.route('/')
 def index():
-    return status()
+    return redirect(url_for('status'))
 
 
 if __name__ == '__main__':
