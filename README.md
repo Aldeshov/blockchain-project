@@ -13,6 +13,6 @@ Running `python app.py`
 ### Remote (Fake) API
 Node JS
 
-- remote.js
+- remote / index.js
 
-Running `node remote.js`
+Running `node index.js`

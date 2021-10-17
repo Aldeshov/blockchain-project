@@ -17,7 +17,8 @@ def get_connection():
 def fetch(order_id):
     conn = get_connection()
     _order = conn.execute("SELECT * FROM orders WHERE id=(?)", (order_id,)).fetchall()[0]
-    content = requests.get('http://127.0.0.1:6000', {"status": _order['status']}).content.decode()
+    content = requests.get('https://blockchain-project-1-remote.herokuapp.com',
+                           {"status": _order['status']}).content.decode()
     conn.execute("UPDATE OR ABORT orders SET status = (?) WHERE id=(?)", (content, _order['id'],))
     if content == "delivered":
         now = datetime.now()
