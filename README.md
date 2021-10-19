@@ -9,10 +9,3 @@ Python Flask
 - templates + static
 
 Running `python app.py`
-
-### Remote (Fake) API
-Node JS
-
-- remote / index.js
-
-Running `node index.js`
